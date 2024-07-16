@@ -1,0 +1,63 @@
+show databases
+use cris
+show tables
+select * from cris_logs
+select * from usertab
+
+DROP TABLE usertab;
+DROP TABLE studentDetails;
+
+create database mess
+use mess
+create table usertab(
+	sl int(11)  NOT NULL PRIMARY KEY AUTO_INCREMENT,   
+    name varchar(35),    
+	scholarid int(11) ,
+    username varchar(35),
+    passwords varchar(35),
+    phoneno varchar(10),
+    email varchar(255),
+    department varchar(255),
+    gender varchar(255),
+    role varchar(35)  
+)
+
+CREATE TABLE studentDetails (
+	sl_ref int(11) ,
+    scholarid int(11) ,
+    paid int(11),
+    leave_taken int(11),
+    joining_date date,
+    hostel_name varchar(255),
+    room_no varchar(25),
+	  FOREIGN KEY (sl_ref)
+        REFERENCES usertab(sl) on delete cascade     
+);
+
+
+insert into usertab (sl, name, scholarid, username, passwords, phoneno, email, department,gender,role) values (1,'Manish',1913105,'mp','123','8133046733','manish@gmail.com','Electrical Engineering','Male','user');      
+insert into usertab (sl, name, scholarid, username, passwords, phoneno, email, department,gender,role) values (2,'Shreya',2113051,'sp','123','7086504887','shreya@gmail.com','ECE','Female','admin');
+insert into usertab (sl, name, scholarid, username, passwords, phoneno, email, department,gender,role) values (3,'pragya',2113052,'pp','123','7086504888','pragya@gmail.com','CSE','Female','admin');
+
+delete from usertab where sl=4
+
+select * from usertab
+
+INSERT INTO studentDetails (sl_ref, scholarid, paid, leave_taken, joining_date, hostel_name, room_no) VALUES (1, 1913105, 12000, 10, '2024-07-16', 'hostel-9', 's213');
+INSERT INTO studentDetails (sl_ref, scholarid, paid, leave_taken, joining_date, hostel_name, room_no) VALUES (2, 2113105, 10000, 20, '2024-07-16', 'hostel-2', 'g213');
+
+
+
+*************************************************************************************************************************************************************************
+
+
+app.post('/api/addStudents', (req, res) => {
+    
+    const sql = "INSERT INTO usertab (sl, name, scholarid, username, passwords, phoneno, email, department, gender, role) VALUES (3, 'pragya', 2113052, ?, ?, '7086504888', 'pragya@gmail.com', 'CSE', 'Female', 'admin')";
+    db.query(sql, [req.body.email, req.body.password], (err) => {
+        // if (err) return res.json({ Message: "Server Side Error " + err.sqlMessage });        
+        // else  
+        return res.json({ Status: "Data Inserted Succesfully" });
+      
+    });
+});
